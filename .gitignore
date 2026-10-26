@@ -1,0 +1,32 @@
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+application-local.properties
+secrets.properties
+
+# Java / Maven build output
+target/
+*.class
+
+# Node / React dependencies and builds
+node_modules/
+dist/
+
+# Logs
+*.log
+logs/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Local database and credentials
+*.dump
+*.backup
