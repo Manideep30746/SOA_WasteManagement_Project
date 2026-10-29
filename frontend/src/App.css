@@ -266,9 +266,9 @@ h2 {
 .report-filters {
   display: grid;
   grid-template-columns:
-    minmax(180px, 2fr)
-    repeat(2, minmax(140px, 1fr))
-    auto;
+  minmax(180px, 2fr)
+  repeat(3, minmax(120px, 1fr))
+  auto;
   gap: 12px;
   margin: 20px 0 10px;
 }

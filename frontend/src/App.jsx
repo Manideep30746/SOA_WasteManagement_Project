@@ -33,6 +33,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [categoryFilter, setCategoryFilter] = useState("ALL");
+  const [sortBy, setSortBy] = useState("newest");
 
   async function loadReports() {
     try {
@@ -195,17 +196,39 @@ const chartColors = ["#d8a342", "#56866b", "#9acb79"];
     return matchesSearch && matchesStatus && matchesCategory;
   });
 
+  const sortedReports = [...filteredReports].sort((a, b) => {
+  switch (sortBy) {
+    case "oldest":
+      return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+
+    case "location":
+      return (a.location || "").localeCompare(b.location || "");
+
+    case "status":
+      return (a.status || "").localeCompare(b.status || "");
+
+    case "newest":
+    default:
+      return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+  }
+});
+
   // Dashboard shows five recent reports; Reports shows all matching reports.
   const displayedReports =
-    page === "dashboard"
-      ? reports.slice(0, 5)
-      : filteredReports;
+  page === "dashboard"
+    ? [...reports].sort(
+        (a, b) =>
+          new Date(b.createdAt || 0) -
+          new Date(a.createdAt || 0)
+      ).slice(0, 5)
+    : sortedReports;
 
   function clearFilters() {
-    setSearch("");
-    setStatusFilter("ALL");
-    setCategoryFilter("ALL");
-  }
+  setSearch("");
+  setStatusFilter("ALL");
+  setCategoryFilter("ALL");
+  setSortBy("newest");
+}
 
 function exportReports() {
   const dataToExport =
@@ -640,6 +663,17 @@ function exportReports() {
                         <option value="OTHER">Other</option>
                       </select>
 
+                      <select
+  value={sortBy}
+  onChange={(e) => setSortBy(e.target.value)}
+  aria-label="Sort reports"
+>
+  <option value="newest">Newest first</option>
+  <option value="oldest">Oldest first</option>
+  <option value="location">Location A–Z</option>
+  <option value="status">Status A–Z</option>
+</select>
+                      
                       <button
                         type="button"
                         className="secondary-button"
